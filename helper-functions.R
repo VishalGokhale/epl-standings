@@ -1,6 +1,13 @@
-# Author: vishal
-###############################################################################
-library(lubridate)
+argumentDateFormat = "%m/%d/%Y"
+formatArgumentDate = function(givenDate) as.Date(givenDate, format=argumentDateFormat)
+
+dataDateFormat = "%d/%m/%Y"
+formatDataDate = function(givenDate) {
+	formattedDate = as.Date(givenDate, format = dataDateFormat)
+	formattedDate = four_digit_year(formattedDate)
+	formattedDate
+}
+
 substrRight = function(x, n) substr(x, nchar(x)-n+1, nchar(x))
 last2 = function (x) substrRight(x,2)
 join = function (x,y) paste(x,y,sep="")
@@ -21,15 +28,7 @@ four_digit_year <- function(given_date, threshold=1990){
 	given_date
 }
 
-argumentDateFormat = "%m/%d/%Y"
-formatArgumentDate = function(givenDate) as.Date(givenDate, format=argumentDateFormat)
 
-dataDateFormat = "%d/%m/%Y"
-formatDataDate = function(givenDate) {
-	formattedDate = as.Date(givenDate, format = dataDateFormat)
-	formattedDate = four_digit_year(formattedDate)
-	formattedDate
-}
 
 
 
