@@ -1,13 +1,8 @@
-#options(warn=0, show.error.messages = TRUE)
 library(dplyr)
 
-setwd("C:/WORK/R Trainer")
 source("./helper-functions.R")
-#source("./explicit_home_and_away_data_functions.R")
 source("./home_away_functions.R")
 
-given_date = formatArgumentDate("08/30/2019")
-season = "2019/20"
 
 get_relevant_data <- function(given_date, season) {
 	given_date = formatArgumentDate(given_date)
@@ -25,9 +20,6 @@ EPL_Standings = function(standings_as_on, season){
 
 	home_games = home_game_data(epl_data)
 	away_games = away_game_data(epl_data)
-
-	#home_matches = home_games %>% group_by(TeamName) %>% summarise(matches = n(), GS = sum(FTHG), GA = sum(FTAG))
-	#away_matches = away_games %>% group_by(TeamName) %>% summarise(matches = n(), GS = sum(FTAG), GA = sum(FTHG))
 
 	home_records = home_games %>%
 		group_by(TeamName) %>%
