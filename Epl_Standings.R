@@ -3,18 +3,6 @@ library(dplyr)
 source("./helper-functions.R")
 source("./home_away_functions.R")
 
-
-get_relevant_data <- function(given_date, season) {
-	given_date = formatArgumentDate(given_date)
-	epl_data = epl_data_for_season(season)
-	epl_data$Date = formatDataDate(epl_data$Date)
-	if(given_date < min(epl_data$Date))
-		stop("Please enter a date later than the season start date")
-	epl_data = keep_relevant_columns_and_rows(epl_data, given_date)
-	epl_data
-}
-
-
 EPL_Standings = function(standings_as_on, season){
 	epl_data = get_relevant_data(standings_as_on, season)
 
