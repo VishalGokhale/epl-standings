@@ -73,27 +73,6 @@ get_relevant_data <- function(given_date, season) {
 	epl_data
 }
 
-#game_data <- function(data, game_type) {
-#  games =  data.frame(data)
-#  names(games)[names(games) == "AwayTeam"] = "TeamName"
-#  games = subset(games, select=c("Date","TeamName","FTHG", "FTAG", "FTR"))
-#  names(games)[names(games) == "FTR"] = "Result"
-#  games = within(games, Result[Result == 'D'] <- 'D')
-#
-#  #games = within(games, Result[Result == 'A'] <- if(game_type=='A') 'W' else 'L')
-#  #games = within(games, Result[Result == 'H'] <- if(game_type=='H') 'W' else 'L')
-
-#  if(game_type=='A'){
-#  	games = within(games, Result[Result == 'A'] <- 'W')
-#  	games = within(games, Result[Result == 'H'] <- 'L')
-#  }
-#  if(game_type=='H'){
-#  	games = within(games, Result[Result == 'H'] <- 'W')
-#  	games = within(games, Result[Result == 'A'] <- 'L')
-#  }
-#
-#  games
-#}
 
 
 
