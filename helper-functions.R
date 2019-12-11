@@ -12,6 +12,7 @@ substrRight = function(x, n) substr(x, nchar(x)-n+1, nchar(x))
 last2 = function (x) substrRight(x,2)
 join = function (x,y) paste(x,y,sep="")
 
+# computes the string needed to create the URL to load data
 season_string = function(season) {
 	seasons = unlist(strsplit(season,"/"))
 	season_url = Reduce(join, Map(last2, seasons))
@@ -22,19 +23,18 @@ epl_data_for_season <- function (season){
 	read.csv(url)
 }
 
+# converts the year to a 4 digit year threshold is 1990 since the oldest data available is from 1993/94
 four_digit_year <- function(given_date, threshold=1990){
 	years_after_cent <- year(given_date) %% 100
 	year(given_date) <- ifelse(years_after_cent > (threshold %% 100), 1900+years_after_cent, 2000+years_after_cent)
 	given_date
 }
 
-
-
-
-
+# keeps only relevant columns from the raw data
 keep_relevant_columns_and_rows =
 	function(epl_data, given_date) subset(epl_data, Date <= given_date, select = c("Date","HomeTeam","AwayTeam","FTHG","FTAG","FTR"))
 
+#takes game data, and summary(matches played, goals scored, goals allowed) and compiles records and points
 compile_record <- function(played_gs_ga, games) {
 	wins = games %>% filter(Result=="W") %>% group_by(TeamName) %>% summarise(wins = n())
 	losses = games %>% filter(Result=="L") %>% group_by(TeamName) %>% summarise(losses = n())
@@ -48,6 +48,8 @@ compile_record <- function(played_gs_ga, games) {
 	records
 }
 
+
+# Takes the record string (ex. WWWL) as input and returns streak (W3)
 streak = function(record){
 	chars <- unlist(strsplit(record, ""))
 	streak_length = 1
@@ -61,6 +63,8 @@ streak = function(record){
 	Streak
 }
 
+#loads epl data for and season, checks that the given date is after the season start date and returns
+# data from the season only upto the given date
 get_relevant_data <- function(given_date, season) {
 	given_date = formatArgumentDate(given_date)
 	epl_data = epl_data_for_season(season)
@@ -83,7 +87,10 @@ game_data <- function(data, columnName, game_type) {
 	games
 }
 
+#creates a copy of the game_data and computes wins-loss-tie Result for Away Team
 away_game_data = function(data) game_data(data,"AwayTeam",'A')
+
+#creates a copy of the game_data and computes wins-loss-tie Result for Home Team
 home_game_data = function(data) game_data(data,"HomeTeam",'H')
 
 
