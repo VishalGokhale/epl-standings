@@ -93,7 +93,12 @@ away_game_data = function(data) game_data(data,"AwayTeam",'A')
 #creates a copy of the game_data and computes wins-loss-tie Result for Home Team
 home_game_data = function(data) game_data(data,"HomeTeam",'H')
 
-
+clean_up_records <- function(all_records) {
+	all_records[is.na(all_records)] = 0
+	all_records[all_records$record.home == 0, "record.home"]= "0-0-0"
+	all_records[all_records$record.away == 0, "record.away"]= "0-0-0"
+	all_records
+}
 
 
 

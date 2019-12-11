@@ -2,8 +2,8 @@ library(dplyr)
 library(lubridate)
 
 source("./helper-functions.R")
-source("./home_away_functions.R")
 
+#return standings for the specified season at the conclusion of all matches played until the given date
 EPL_Standings = function(standings_as_on, season){
 	epl_data = get_relevant_data(standings_as_on, season)
 
@@ -21,19 +21,20 @@ EPL_Standings = function(standings_as_on, season){
 		compile_record(away_games)
 
 	all_records = full_join(home_records, away_records, by = "TeamName", suffix=c(".home",".away"))
-	all_records[is.na(all_records)] = 0
-	all_records[all_records$record.home == 0, "record.home"]= "0-0-0"
-	all_records[all_records$record.away == 0, "record.away"]= "0-0-0"
+
+	all_records = clean_up_records(all_records)
 
 	all_games_by_team <- rbind(home_games, away_games) %>%
 		group_by(TeamName)
 
+	#Compute win/loss/ties Streak
 	win_loss_ties_streak = all_games_by_team	%>%
 		arrange(desc(Date), TeamName) %>%
 		summarise(record = paste(Result, sep="", collapse = "")) %>%
 		mutate(Streak = sapply(record, streak)) %>%
 		select(TeamName, Streak)
 
+	#Compute the record for last 10 gamges
 	last_10_record = all_games_by_team %>%
 		top_n(10, Date) %>%
 		#arrange(TeamName, Date) %>%
@@ -42,6 +43,7 @@ EPL_Standings = function(standings_as_on, season){
 		mutate(Last10 = paste(wins,losses,ties, sep="-")) %>%
 		select(TeamName, Last10)
 
+	#Compute the standings as of the given date
 	standings = all_records %>%
 		mutate(MatchesPlayed = (matches.home + matches.away),
 			   Points = points.home + points.away,
