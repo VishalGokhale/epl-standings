@@ -70,4 +70,4 @@ EPL_Standings = function(standings_as_on, season){
 }
 
 
-EPL_Standings("10/30/2019","2018/19")
+#EPL_Standings("10/30/2019","2018/19")
