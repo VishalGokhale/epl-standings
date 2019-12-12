@@ -20,9 +20,7 @@ EPL_Standings = function(standings_as_on, season){
 		summarise(matches = n(), GS = sum(FTAG), GA = sum(FTHG)) %>%
 		compile_record(away_games)
 
-	all_records = full_join(home_records, away_records, by = "TeamName", suffix=c(".home",".away"))
-
-	all_records = clean_up_records(all_records)
+	all_records = full_join(home_records, away_records, by = "TeamName", suffix=c(".home",".away")) %>% clean_up
 
 	all_games_by_team <- rbind(home_games, away_games) %>%
 		group_by(TeamName)
