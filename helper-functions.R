@@ -53,8 +53,10 @@ compile_record <- function(played_gs_ga, games) {
 streak = function(record){
 	chars <- unlist(strsplit(record, ""))
 	streak_length = 1
-	for (c in chars[-1]){
-		if(c==chars[1])
+	record_without_first_character <- chars[-1]
+	first_character <- chars[1]
+	for (c in record_without_first_character){
+		if(c==first_character)
 			streak_length = streak_length+1
 		else
 			break
